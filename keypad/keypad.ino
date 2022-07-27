@@ -2,10 +2,10 @@
 #include<Keypad.h>
 Servo ServoMotor;
 
-char* password = "789";
+char* password = "189";
 //You can change the Passowr
 int position = 0;
-int flag;
+int flag=0;
 int sensorValue;
 int pirSensor = 12;
 int buzzer = 13;
@@ -33,15 +33,17 @@ void setup()
 }
 void loop()
 {
-
+  Serial.println("give key");
   char key = keypad.getKey();
-  if (key == '*')
+  if (key == '7')
   {
+    Serial.println(key);
     position = 0;
     LockedPosition(true);
   }
   if (key == password[position])
   {
+    Serial.println(key);
     position ++;
   }
   if (position == 3)
@@ -51,7 +53,7 @@ void loop()
   while (flag) {
     Serial.println("While");
     int sensorValue = digitalRead(pirSensor);
-    if (sensorValue == 1)
+    if (sensorValue == 0)
     {
       Serial.println("Motion1");
       tone(buzzer, 1000);
@@ -61,7 +63,7 @@ void loop()
     }
     else
     {
-      Serial.println("Motion2");
+      Serial.println(" no Motion2");
     }
   }
   flag =0;
@@ -80,7 +82,7 @@ void LockedPosition(int locked)
   {
     int i,j;
     
-    flag = 0;
+    //flag = 0;
     for (i=30;i<=130;i++)
     {
       ServoMotor.write(i);
